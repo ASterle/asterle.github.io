@@ -1,7 +1,8 @@
 ---
 layout: post
 title: Flashing a Bricked Bios Chip!
-date: 2022-09-01
+date: 2022-09-01T00:00:00.000Z
+published: true
 ---
 
 # Intro
@@ -14,7 +15,7 @@ To explain a bit: P6.62 BIOS was an unofficial "beta" that added support for Zen
 
 So I went to [ASRocks official website](https://www.asrock.com/mb/amd/x370%20taichi/index.asp#BIOS) and downloaded P7.00 and P7.10, put them on a USB stick, rebooted the PC and started flashing the BIOS with P7.00.
 
-## The problems start
+### The problems start
 
 After it flashed successfully I was prompted to reboot the PC. So I did and after that... nothing. The computer would get stuck in a boot loop and that's it. Less than a day after I revived my PC with a new GPU, it was once again dead and unusable. The problem as you may have noticed was that P7.00 did not support *"Vermeer"* CPUs. So I couldn't use my CPU to boot and then flash to P7.10 to fix everything.
 
@@ -36,7 +37,7 @@ In the end I decided on option 3. Buying a motherboard is expensive and I would 
 
 So I decided using the CH341a programmer to flash the chip again is the best way to go as it would also be usable in the future. Everything with the shipping to Slovenia included cost me about 30€.
 
-## Researching flashing BIOS chips externally
+### Researching flashing BIOS chips externally
 
 One of the more useful resources I used was [Overclock.net](https://www.overclock.net). Specifically the [ASRock X370 Taichi overclocking thread](https://www.overclock.net/threads/asrock-x370-taichi-overclocking-thread.1627407/). It had tons of information on the motherboard, and the combined knowledge of the users there was incredibly helpful for me.
 
@@ -83,10 +84,8 @@ Unfortunately `No EEPROM/flash device found`. Twice... I moved the clips after e
 ![Connecting to the chip]({{ site.baseurl }}/images/2022-09-01-flashing-bricked-bios-chip/connecting_chip.png)
 The next thing I did was to do a couple of test reads, where I did a SHA512 checksum on every result. And I was lucky (unlucky?) to actually have an unstable connection so I can demonstrate why you should do multiple reads and a checksum of every read.  Note that each read took around 2 minutes and 20 seconds. So CH341a seems to be a pretty slow programmer.
 
-```
-sudo flashrom --programmer ch341a_spi -r 1.bin
-sha512sum 1.bin
-```
+`sudo flashrom --programmer ch341a_spi -r 1.bin`
+`sha512sum 1.bin`
 
 The first read was fine, but the second had a different checksum... and then the third read failed to identify the chip. Apparently my clips slipped a bit and the pins lost contact. So I reseated the clip and tried again. This time another 2 reads had the same checksum as the first one so I was assured that these are the chip contents and that my connection is secure!
 
