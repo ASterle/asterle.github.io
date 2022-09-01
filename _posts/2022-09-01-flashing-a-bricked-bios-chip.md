@@ -1,4 +1,5 @@
 ---
+layout: post
 title: Flashing a Bricked Bios Chip!
 date: 2022-09-01
 ---
