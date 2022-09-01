@@ -11,7 +11,7 @@ Recently I purchased a new GPU and while I was hooking it up, I decided to also 
 
 To explain a bit: P6.62 BIOS was an unofficial "beta" that added support for Zen 3 processors, while P7.00 was a bridge bios to upgrade to P7.10 which had official support for Zen 3 *"Vermeer"* CPUs.
 
-So I went to https://www.asrock.com/mb/amd/x370%20taichi/index.asp#BIOS downloaded P7.00 and P7.10, put them on a USB stick, rebooted the PC and started flashing the BIOS with P7.00.
+So I went to [ASRocks official website](https://www.asrock.com/mb/amd/x370%20taichi/index.asp#BIOS) and downloaded P7.00 and P7.10, put them on a USB stick, rebooted the PC and started flashing the BIOS with P7.00.
 
 ## The problems start
 
