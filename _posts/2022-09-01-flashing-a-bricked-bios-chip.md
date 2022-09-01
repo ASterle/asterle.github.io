@@ -85,6 +85,7 @@ Unfortunately `No EEPROM/flash device found`. Twice... I moved the clips after e
 The next thing I did was to do a couple of test reads, where I did a SHA512 checksum on every result. And I was lucky (unlucky?) to actually have an unstable connection so I can demonstrate why you should do multiple reads and a checksum of every read.  Note that each read took around 2 minutes and 20 seconds. So CH341a seems to be a pretty slow programmer.
 
 `sudo flashrom --programmer ch341a_spi -r 1.bin`
+
 `sha512sum 1.bin`
 
 The first read was fine, but the second had a different checksum... and then the third read failed to identify the chip. Apparently my clips slipped a bit and the pins lost contact. So I reseated the clip and tried again. This time another 2 reads had the same checksum as the first one so I was assured that these are the chip contents and that my connection is secure!
