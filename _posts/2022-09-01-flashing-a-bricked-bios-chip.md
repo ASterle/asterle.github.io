@@ -1,6 +1,7 @@
 ---
-title: "Flashing a Bricked Bios Chip!"
-date: 2022-09-01
+title: Flashing a Bricked Bios Chip!
+date: {}
+published: true
 ---
 
 # Intro
@@ -52,7 +53,7 @@ Some YouTube videos with more information on using the CH341a
 
 So with all the information I found on the internet, I started checking out my BIOS chip. I found it's location on the motherboard (thankfully it wasn't covered by the GPU...) and tried to see if there are any markings on it so I can identify it. Mine was covered with a sticker labeled P2.60 (which is the BIOS version it shipped with), so I removed it and then took a photo of the chip to try and identify it.
 
-![BIOS chip details](/assets/images/2022-09-01-flashing-bricked-bios-chip/bios_chip.jpg)
+![BIOS chip details]({{ site.baseurl }}/images/2022-09-01-flashing-bricked-bios-chip/bios_chip.jpg)
 
 Taking a photo and zooming in on the chip makes the text on it readable. Here we can see that my BIOS chip is the [Macronix mx25u12873f](https://www.mxic.com.tw/en-us/products/NOR-Flash/Serial-NOR-Flash/pages/spec.aspx?p=mx25u12873f&m=serial+nor+flash&n=pm2348). A quick Google search and we can find the chips product page. Also take note of the black triangle pointing to the lower left leg, it marks pin 1.
 
@@ -64,20 +65,22 @@ Ok, so I know the chip voltage, I know its pin 1 location and I know that it is 
 
 It was finally time to assemble the programmer and connect it to the BIOS chip. First I turned off the PSU power switch. Then I plugged the 1.8V hat into the programmer keeping in mind the correct pin orientation.
 
-![CH341a pin orientation](/assets/images/2022-09-01-flashing-bricked-bios-chip/ch341a.jpg)
+![CH341a pin orientation]({{ site.baseurl }}/images/2022-09-01-flashing-bricked-bios-chip/ch341a.jpg)
 Once fully assembled the programmer looked like this.
 
-![CH341a with hats](/assets/images/2022-09-01-flashing-bricked-bios-chip/ch341a_with_hats.jpg)
+![CH341a with hats]({{ site.baseurl }}/images/2022-09-01-flashing-bricked-bios-chip/ch341a_with_hats.jpg)
 The red cable on the clip indicates pin 1. So I aligned it with the black triangle on the motherboard silkscreen and put the clip on the chip.
 
-![Clip attached to chip](/assets/images/2022-09-01-flashing-bricked-bios-chip/clip_attached_to_chip.jpg)
+![Clip attached to chip]({{ site.baseurl }}/images/2022-09-01-flashing-bricked-bios-chip/clip_attached_to_chip.jpg)
 Getting a good connection with these clips can be finicky so try and get a good contact with the pins.
 
 Then it was time to plug in the CH341a programmer into a PC. I used a Linux Manjaro live usb which had **flashrom** included (most linux distros should have it preinstalled), opened a terminal and ran the command `sudo flashrom --programmer ch341a_spi` to see if it can identify the chip (which would be a good sign).
 
+![Ghetto programmer setup]({{ site.baseurl }}/images/2022-09-01-flashing-bricked-bios-chip/ghetto_programmer_setup.jpg)
+
 Unfortunately `No EEPROM/flash device found`. Twice... I moved the clips after each failed attempt and tried to get a good connection and third time's the charm!! Success, flashrom successfully identified the chip! 
 
-![Connecting to the chip](/assets/images/2022-09-01-flashing-bricked-bios-chip/connecting_chip.png)
+![Connecting to the chip]({{ site.baseurl }}/images/2022-09-01-flashing-bricked-bios-chip/connecting_chip.png)
 The next thing I did was to do a couple of test reads, where I did a SHA512 checksum on every result. And I was lucky (unlucky?) to actually have an unstable connection so I can demonstrate why you should do multiple reads and a checksum of every read.  Note that each read took around 2 minutes and 20 seconds. So CH341a seems to be a pretty slow programmer.
 
 ```
@@ -87,7 +90,7 @@ sha512sum 1.bin
 
 The first read was fine, but the second had a different checksum... and then the third read failed to identify the chip. Apparently my clips slipped a bit and the pins lost contact. So I reseated the clip and tried again. This time another 2 reads had the same checksum as the first one so I was assured that these are the chip contents and that my connection is secure!
 
-![Finished reading the existing data](/assets/images/2022-09-01-flashing-bricked-bios-chip/finished_reading.png)
+![Finished reading the existing data]({{ site.baseurl }}/images/2022-09-01-flashing-bricked-bios-chip/finished_reading.png)
 Now at this point half of the BIOS chip had P7.00  contents and the other half had P7.10 written to it. I decided to just flash it directly with the P7.10 so I downloaded the BIOS file and started to write to the chip:
 
 `sudo flashrom --programmer ch341a_spi -w X370TC7.10`
